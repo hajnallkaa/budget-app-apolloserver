@@ -1,5 +1,6 @@
 const Transaction = require("./models/Transactions.model.js");
 
+
 const resolvers = {
     Query: { 
 
@@ -33,17 +34,14 @@ const resolvers = {
         },
 
 
-    getMoney : async() => {
-        const reducer = (accumulator, curr) => accumulator + curr;
+    getMoney: async() => {
+           const reducer = (accumulator, curr) => accumulator + curr;
         return await (await Transaction.find()).map(i => {
-            let sum = 0;
-            return (i.category === 'Income' ? sum += i.value : sum -= i.value) 
+            return (i.category === 'Expense' ? i.value * -1 : i.value)
         }).reduce(reducer)
-        
-    },
             
          
-
+    },
     getDaysofIncome : async() => {
             return await( await Transaction.find()).filter((a) => a.category == "Income").map(item => {
                 const dateList = item.date.split('-');
